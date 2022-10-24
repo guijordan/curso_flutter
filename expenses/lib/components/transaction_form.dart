@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
-  const TransactionForm(this.onSubmit, {super.key});
+
+  const TransactionForm(this.onSubmit, {Key? key}) : super(key: key);
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -12,15 +13,17 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final _titleController = TextEditingController();
   final _valueController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
+  DateTime? _selectedDate = DateTime.now();
 
   _submitForm() {
     final title = _titleController.text;
-    final value = double.tryParse(_valueController.text) ?? 0.0;
-    if (title.isEmpty || value <= 0) {
+    final value = double.tryParse(_valueController.text) ?? 0;
+
+    if (title.isEmpty || value <= 0 || _selectedDate == null) {
       return;
     }
-    widget.onSubmit(title, value, _selectedDate);
+
+    widget.onSubmit(title, value, _selectedDate!);
   }
 
   _showDatePicker() {
@@ -33,6 +36,7 @@ class _TransactionFormState extends State<TransactionForm> {
       if (pickedDate == null) {
         return;
       }
+
       setState(() {
         _selectedDate = pickedDate;
       });
@@ -52,7 +56,7 @@ class _TransactionFormState extends State<TransactionForm> {
             bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
           ),
           child: Column(
-            children: <Widget>[
+            children: [
               TextField(
                 controller: _titleController,
                 onSubmitted: (_) => _submitForm(),
@@ -62,42 +66,50 @@ class _TransactionFormState extends State<TransactionForm> {
               ),
               TextField(
                 controller: _valueController,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 onSubmitted: (_) => _submitForm(),
                 decoration: const InputDecoration(
                   labelText: 'Valor (R\$)',
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 70,
                 child: Row(
-                  children: [
-                    Expanded(child: Text(_selectedDate == null ? 'Nenhuma Data Selecionada' : 'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}')),
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'Nenhuma data selecionada!'
+                            : 'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate!)}',
+                      ),
+                    ),
                     TextButton(
-                      onPressed: _showDatePicker,
                       child: const Text(
                         'Selecionar Data',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                      onPressed: _showDatePicker,
+                    )
                   ],
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: _submitForm,
-                    style: TextButton.styleFrom(
-                      foregroundColor: Theme.of(context).textTheme.button?.color,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                children: <Widget>[
+                  ElevatedButton(
+                    child: Text(
+                      'Nova Transação',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.button?.color,
+                      ),
                     ),
-                    child: const Text('Nova Transação'),
+                    onPressed: _submitForm,
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

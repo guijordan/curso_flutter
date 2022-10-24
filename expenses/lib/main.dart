@@ -1,19 +1,22 @@
-import 'package:expenses/components/chart.dart';
-import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:io';
-import './components/transaction_form.dart';
-import './components/transaction_list.dart';
+import 'package:expenses/components/transaction_form.dart';
+import 'package:flutter/material.dart';
+import 'components/transaction_form.dart';
+import 'components/transaction_list.dart';
+import 'components/chart.dart';
 import 'models/transaction.dart';
 
 main() => runApp(ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
+  ExpensesApp({Key? key}) : super(key: key);
+  final ThemeData tema = ThemeData();
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = ThemeData();
     return MaterialApp(
-      home: MyHomePage(),
+      home: const MyHomePage(),
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
           primary: Colors.purple,
@@ -28,8 +31,9 @@ class ExpensesApp extends StatelessWidget {
           ),
           button: const TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
-        ), //textTheme.button.color
+        ),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
@@ -43,8 +47,10 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -53,7 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
-      return tr.date.isAfter(DateTime.now().subtract(const Duration(days: 7)));
+      return tr.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
     }).toList();
   }
 
@@ -93,10 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
-      title: const Text(
-        'Despesas Pessoais',
-      ),
-      actions: <Widget>[
+      title: const Text('Despesas Pessoais'),
+      actions: [
         if (isLandscape)
           IconButton(
             icon: Icon(_showChart ? Icons.list : Icons.show_chart),
@@ -112,13 +118,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
     );
-    final availableHeight = mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top;
+
+    final availableHeight = mediaQuery.size.height -
+        appBar.preferredSize.height -
+        mediaQuery.padding.top;
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+          children: [
             // if (isLandscape)
             //   Row(
             //     mainAxisAlignment: MainAxisAlignment.center,
@@ -136,12 +146,12 @@ class _MyHomePageState extends State<MyHomePage> {
             //     ],
             //   ),
             if (_showChart || !isLandscape)
-              Container(
+              SizedBox(
                 height: availableHeight * (isLandscape ? 0.8 : 0.3),
                 child: Chart(_recentTransactions),
               ),
             if (!_showChart || !isLandscape)
-              Container(
+              SizedBox(
                 height: availableHeight * (isLandscape ? 1 : 0.7),
                 child: TransactionList(_transactions, _removeTransaction),
               ),
