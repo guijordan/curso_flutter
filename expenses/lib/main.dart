@@ -1,6 +1,7 @@
 import 'package:expenses/components/chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dart:io';
 import './components/transaction_form.dart';
 import './components/transaction_list.dart';
 import 'models/transaction.dart';
@@ -88,7 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
       title: const Text(
@@ -110,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
     );
-    final availableHeight = MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+    final availableHeight = mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top;
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -122,7 +124,8 @@ class _MyHomePageState extends State<MyHomePage> {
             //     mainAxisAlignment: MainAxisAlignment.center,
             //     children: [
             //       const Text('Exibir Gráfico'),
-            //       Switch(
+            //       Switch.adaptive(
+            //         activeColor: Theme.of(context).colorScheme.secondary,
             //         value: _showChart,
             //         onChanged: (value) {
             //           setState(() {
@@ -134,21 +137,23 @@ class _MyHomePageState extends State<MyHomePage> {
             //   ),
             if (_showChart || !isLandscape)
               Container(
-                height: availableHeight * (isLandscape ? 0.7 : 0.3),
+                height: availableHeight * (isLandscape ? 0.8 : 0.3),
                 child: Chart(_recentTransactions),
               ),
             if (!_showChart || !isLandscape)
               Container(
-                height: availableHeight * 0.70,
+                height: availableHeight * (isLandscape ? 1 : 0.7),
                 child: TransactionList(_transactions, _removeTransaction),
               ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => _openTransactionFormModal(context),
-      ),
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () => _openTransactionFormModal(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
