@@ -9,7 +9,7 @@ import 'package:shop/models/product.dart';
 import 'package:shop/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
-  List<Product> _items = [];
+  final List<Product> _items;
   final String _token;
 
   List<Product> get items => [..._items];
@@ -22,7 +22,7 @@ class ProductList with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final response = await http.post(Uri.parse('${Constants.PRODUCT_BASE_URL}.json'),
+    final response = await http.post(Uri.parse('${Constants.PRODUCT_BASE_URL}.json?auth=$_token'),
         body: jsonEncode({
           "name": product.name,
           "description": product.description,
@@ -45,7 +45,7 @@ class ProductList with ChangeNotifier {
 
   Future<void> updateProduct(Product product) async {
     int index = _items.indexWhere((p) => p.id == product.id);
-    await http.patch(Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json'),
+    await http.patch(Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json?auth=$_token'),
         body: jsonEncode({
           "name": product.name,
           "description": product.description,
@@ -69,7 +69,7 @@ class ProductList with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json'),
+        Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json?auth=$_token'),
       );
 
       if (response.statusCode >= 400) {
