@@ -1,0 +1,79 @@
+{
+  "orders": {
+    "OooIebZsavaew9JHyuyexfz0BxO2": {
+      "-NJ9vFx7ui_Ro7nE0kbT": {
+        "date": "2022-12-13T06:59:43.882235",
+        "products": [
+          {
+            "id": "0.11325422337636848",
+            "name": "Yellow Scarf Teste 3",
+            "price": 19.99,
+            "productId": "-NIH6-NBiSvuxxlZ9k3O",
+            "quantity": 3
+          },
+          {
+            "id": "0.6026052454185051",
+            "name": "teste jordan",
+            "price": 20,
+            "productId": "-NIZLQ6kq8FX3U7kXq9q",
+            "quantity": 3
+          }
+        ],
+        "total": 119.97
+      },
+      "-NJ9vdcIwuep57ADHEKe": {
+        "date": "2022-12-13T07:01:24.942129",
+        "products": [
+          {
+            "id": "0.7057497745945666",
+            "name": "Yellow Scarf Teste 3",
+            "price": 19.99,
+            "productId": "-NIH6-NBiSvuxxlZ9k3O",
+            "quantity": 2
+          },
+          {
+            "id": "0.5753161214033384",
+            "name": "teste jordan",
+            "price": 20,
+            "productId": "-NIZLQ6kq8FX3U7kXq9q",
+            "quantity": 5
+          }
+        ],
+        "total": 139.98
+      },
+      "-NJKGkZtoX20w6Vam2g8": {
+        "date": "2022-12-15T07:14:14.063215",
+        "products": [
+          {
+            "id": "0.49776950910861006",
+            "name": "teste jordan",
+            "price": 20,
+            "productId": "-NIZLQ6kq8FX3U7kXq9q",
+            "quantity": 3
+          }
+        ],
+        "total": 60
+      }
+    }
+  },
+  "products": {
+    "-NIH6-NBiSvuxxlZ9k3O": {
+      "description": "Casaco amarelo",
+      "imageUrl": "https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg",
+      "name": "Yellow Scarf Teste 3",
+      "price": 19.99
+    },
+    "-NIZLQ6kq8FX3U7kXq9q": {
+      "description": "teste teste",
+      "imageUrl": "https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg",
+      "name": "teste jordan",
+      "price": 20
+    }
+  },
+  "userFavorites": {
+    "OooIebZsavaew9JHyuyexfz0BxO2": {
+      "-NIH6-NBiSvuxxlZ9k3O": false,
+      "-NIZLQ6kq8FX3U7kXq9q": false
+    }
+  }
+}
