@@ -34,6 +34,6 @@
             android:value="2" />
 
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="COLOCAR_CHAVE_GOOGLE_MAPS"/>
+               android:value="COLOQUE_AQUI_SUA_CHAVE_GOOGLE_CLOUD_PLATFORM"/>
     </application>
 </manifest>
