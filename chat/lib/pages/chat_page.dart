@@ -1,16 +1,27 @@
-import 'dart:math';
-
 import 'package:chat/components/messages.dart';
 import 'package:chat/components/new_message.dart';
-import 'package:chat/core/models/chat_notification.dart';
 import 'package:chat/core/services/auth/auth_service.dart';
 import 'package:chat/core/services/notification/chat_notification_service.dart';
 import 'package:chat/pages/notification_page.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    final fbm = FirebaseMessaging.instance;
+    fbm.requestPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
