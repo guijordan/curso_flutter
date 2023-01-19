@@ -87,7 +87,7 @@ class Campo {
     _explodido = false;
   }
 
-  void relevarBombas() {
+  void relevarBomba() {
     if (_minado) {
       _aberto = true;
     }
