@@ -1,45 +1,67 @@
-import 'package:campo_minado/components/campo_widget.dart';
 import 'package:campo_minado/components/resultado_widget.dart';
+import 'package:campo_minado/components/tabuleiro_widget.dart';
 import 'package:campo_minado/models/campo.dart';
 import 'package:campo_minado/models/explosao_exception.dart';
+import 'package:campo_minado/models/tabuleiro.dart';
 import 'package:flutter/material.dart';
 
-class CampoMinadoApp extends StatelessWidget {
+class CampoMinadoApp extends StatefulWidget {
+  @override
+  State<CampoMinadoApp> createState() => _CampoMinadoAppState();
+}
+
+class _CampoMinadoAppState extends State<CampoMinadoApp> {
+  bool? _venceu;
+  final Tabuleiro _tabuleiro = Tabuleiro(
+    linhas: 12,
+    colunas: 12,
+    qtdeBombas: 3,
+  );
+
   _reiniciar() {
-    print('reiniciar...');
+    setState(() {
+      _venceu = null;
+      _tabuleiro.reiniciar();
+    });
   }
 
   void _abrir(Campo campo) {
-    print('abrir...');
+    if (_venceu != null) {
+      return;
+    }
+    setState(() {
+      try {
+        campo.abrir();
+        if (_tabuleiro.resolvido) {
+          _venceu = true;
+        }
+      } on ExplosaoException {
+        _venceu = false;
+        _tabuleiro.revelarBombas();
+      }
+    });
   }
 
   void _alternarMarcacao(Campo campo) {
-    print('alternar Marcacao');
+    if (_venceu != null) {
+      return;
+    }
+    setState(() {
+      campo.alternarMarcacao();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Campo vizinho1 = Campo(linha: 1, coluna: 0);
-    vizinho1.minar();
-    Campo vizinho2 = Campo(linha: 1, coluna: 1);
-    vizinho2.minar();
-    Campo campo = Campo(linha: 0, coluna: 0);
-    campo.adicionarVizinho(vizinho1);
-    campo.adicionarVizinho(vizinho2);
-    try {
-      //campo.minar();
-      campo.alternarMarcacao();
-    } on ExplosaoException {}
-
     return MaterialApp(
       home: Scaffold(
         appBar: ResultadoWidget(
           onReiniciar: _reiniciar,
-          venceu: true,
+          venceu: _venceu,
         ),
         body: Container(
-          child: CampoWidget(
-            campo: campo,
+          child: TabuleiroWidget(
+            tabuleiro: _tabuleiro,
             onAbrir: _abrir,
             onAlterarMarcacao: _alternarMarcacao,
           ),
