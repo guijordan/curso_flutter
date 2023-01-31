@@ -1,0 +1,7 @@
+# comando para gerar os arquivos com extensão .g.dart: flutter pub run build_runner watch
+targets:
+  $default:
+    builders:
+      mobx_codegen|mobx_generator:
+        generate_for:
+          - "lib/store/**.store.dart"
